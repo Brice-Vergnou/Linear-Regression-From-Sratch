@@ -1,6 +1,6 @@
 # Linear Regression from scratch
 
-Create a linear regression from scratch , just using numpy arrays
+Create a linear regression ( both Simple and Multiple ) from scratch , just using numpy arrays
 
 It allowed me to understand the concepts , the math behind this algorithm , and some principles about metrics . It was also a great experience to work with numpy arrays.
 
@@ -22,9 +22,10 @@ Run the code !
 You can tweak the code if you want to :
 
 * Line 48 , n_samples : The number of samples
-* Line 48 , n_features : The number of features
 * Line 50 , lr : The learning rate
-* Line 50 , n_iter : The number of iterations
+* Line 50 , n_iter : The number of iteration
+  
+  **Note** : If you choose to use only one feature , you'll get a plot of the model
 
 ## Sources 
 

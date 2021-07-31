@@ -2,6 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn import datasets
+from matplotlib import cm
+
+all_mse = []
 
 def mse(y_true,y_pred) -> float: 
     return np.mean((y_true - y_pred) ** 2) 
@@ -39,15 +42,18 @@ class LinearRegression:
             self.weights -= dw * self.lr
             self.bias -= db * self.lr
             
-            if i % 2500 == 0 or i==0:
-                print(f"Iter : {i}   ,   MSE : {mse(y,self.predict(X)):.2f}   ,  R2  : {r2_score(y,self.predict(X)):.4f}")
+            mse_score = mse(y,self.predict(X))
+            all_mse.append(mse_score)
             
-    
+            if i % 500 == 0 or i==0:
+                print(f"Iter : {i}   ,   MSE : {mse_score:.2f}   ,  R2  : {r2_score(y,self.predict(X)):.4f}")
+            
+n_features = int(input("Number of features ? : "))
 
 
-X, y = datasets.make_regression(n_samples=1000, n_features=1, noise=20, random_state=0)
+X, y = datasets.make_regression(n_samples=1000, n_features=n_features, noise=20, random_state=0)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
-regressor = LinearRegression(lr=0.00001, n_iter=400000)
+regressor = LinearRegression(lr=0.0001, n_iter=30000)
 regressor.fit(X_train, y_train)
 predictions = regressor.predict(X_test)
 
@@ -58,9 +64,18 @@ accu = r2_score(y_test, predictions)
 print("Final Accuracy:", accu)
 
 y_pred_line = regressor.predict(X)
-cmap = plt.get_cmap("viridis")
+
+if n_features==1:
+    cmap = plt.get_cmap("viridis")
+    fig = plt.figure(figsize=(8, 6))
+    m1 = plt.scatter(X_train, y_train, color=cmap(0.9), s=10)
+    m2 = plt.scatter(X_test, y_test, color=cmap(0.5), s=10)
+    plt.plot(X, y_pred_line, color="black", linewidth=2, label="Prediction")
+    plt.show()
+
 fig = plt.figure(figsize=(8, 6))
-m1 = plt.scatter(X_train, y_train, color=cmap(0.9), s=10)
-m2 = plt.scatter(X_test, y_test, color=cmap(0.5), s=10)
-plt.plot(X, y_pred_line, color="black", linewidth=2, label="Prediction")
+plt.title("Error rate")
+plt.xlabel("Training iteration")
+plt.ylabel("Mean Square Error")
+plt.plot(list(range(regressor.n_iter)),all_mse)
 plt.show()
