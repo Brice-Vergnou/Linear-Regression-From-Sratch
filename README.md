@@ -4,6 +4,8 @@ Create a linear regression ( both Simple and Multiple ) from scratch , just usin
 
 It allowed me to understand the concepts , the math behind this algorithm , and some principles about metrics . It was also a great experience to work with numpy arrays.
 
+![Figure_1](https://user-images.githubusercontent.com/86613710/127746300-0c598d5b-d97a-48f9-bf07-437a7a79d15b.png)
+
 
 ## Usage
 
