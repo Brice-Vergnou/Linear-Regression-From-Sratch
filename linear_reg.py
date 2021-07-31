@@ -50,7 +50,7 @@ class LinearRegression:
 n_features = int(input("Number of features ? : "))
 
 
-X, y = datasets.make_regression(n_samples=1000, n_features=n_features, noise=20, random_state=0)
+X, y = datasets.make_regression(n_samples=1000, n_features=n_features, noise=20)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 regressor = LinearRegression(lr=0.0001, n_iter=30000)
 regressor.fit(X_train, y_train)
@@ -62,8 +62,18 @@ print("\nFinal MSE:", mse)
 accu = r2_score(y_test, predictions)
 print("Final Accuracy:", accu)
 
-y_pred_line = regressor.predict(X)
+equation = "Final Equation: "
+alphabet = "xyzabc"
+for i in range(len(alphabet)):
+    if i >= len(regressor.weights):
+        break
+    equation += str(round(regressor.weights[i],2)) + f"{alphabet[i]} * "
+equation = equation[:-2]
+str_bias = "+ " if regressor.bias > 0 else ""
+equation += str_bias + str(round(regressor.bias,2))
 
+y_pred_line = regressor.predict(X)
+print(equation)
 if n_features==1:
     cmap = plt.get_cmap("viridis")
     fig = plt.figure(figsize=(8, 6))
@@ -71,6 +81,7 @@ if n_features==1:
     m2 = plt.scatter(X_test, y_test, color=cmap(0.5), s=10)
     plt.plot(X, y_pred_line, color="black", linewidth=2, label="Prediction")
     plt.show()
+
 
 fig = plt.figure(figsize=(8, 6))
 plt.title("Error rate")
